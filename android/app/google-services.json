@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "131136834751",
+    "firebase_url": "https://cv-builder-79690-default-rtdb.firebaseio.com",
+    "project_id": "cv-builder-79690",
+    "storage_bucket": "cv-builder-79690.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:131136834751:android:6b2cf73f006a70d52f0a0a",
+        "android_client_info": {
+          "package_name": "com.example.cv_builder"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJKYMblhI4MWzFQM7tLuiHDY3m_BsPsKw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
