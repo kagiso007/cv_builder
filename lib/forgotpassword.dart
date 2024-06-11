@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cv_builder/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class resetPassword extends StatefulWidget {
   const resetPassword({super.key, required this.title});
@@ -60,7 +61,10 @@ class _resetPasswordState extends State<resetPassword> {
                       }
                     },
                     child: ElevatedButton(
-                      onPressed: () async {},
+                      onPressed: () async {
+                        await FirebaseAuth.instance.sendPasswordResetEmail(
+                            email: emailController.text);
+                      },
                       child: Text('reset password'),
                     ),
                   ),

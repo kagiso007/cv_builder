@@ -39,7 +39,7 @@ dependencies:
   firebase_auth: ^4.16.0
   sign_in_with_apple: ^5.0.0
   crypto: ^3.0.1
-  fluttertoast: ^8.2.5
+  fluttertoast: ^8.2.6
   email_validator: ^2.1.17
 
 dev_dependencies:
