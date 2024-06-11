@@ -8,6 +8,7 @@ import 'dart:math';
 import 'package:crypto/crypto.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:email_validator/email_validator.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key, required this.title});
@@ -18,7 +19,26 @@ class Login extends StatefulWidget {
   State<Login> createState() => _LoginState();
 }
 
+showLoaderDialog(BuildContext context) {
+  AlertDialog alert = AlertDialog(
+    content: new Row(
+      children: [
+        CircularProgressIndicator(),
+        Container(margin: EdgeInsets.only(left: 7), child: Text("Loading...")),
+      ],
+    ),
+  );
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
 class _LoginState extends State<Login> {
+  final user = FirebaseAuth.instance.currentUser;
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -42,9 +62,10 @@ class _LoginState extends State<Login> {
                   controller: emailController,
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(), labelText: "Email"),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
+                    if (!EmailValidator.validate(emailController.text)) {
+                      return 'Please enter a valid email';
                     }
                     return null;
                   },
@@ -58,6 +79,7 @@ class _LoginState extends State<Login> {
                   obscureText: true,
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(), labelText: "Password"),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your password';
@@ -73,38 +95,76 @@ class _LoginState extends State<Login> {
                   child: ElevatedButton(
                     onPressed: () async {
                       await FirebaseAuth.instance.currentUser?.reload();
-                      if (FirebaseAuth.instance.currentUser!.emailVerified) {
-                        try {
-                          final credential = await FirebaseAuth.instance
-                              .signInWithEmailAndPassword(
-                                  email: emailController.text,
-                                  password: passwordController.text);
-                          Route route = MaterialPageRoute(
-                              builder: (context) => const HomePage(
-                                    title: "Create CV",
-                                  ));
-                          Navigator.push(context, route);
-                        } on FirebaseAuthException catch (e) {
-                          if (e.code == 'user-not-found') {
-                            Fluttertoast.showToast(
-                                msg: "No user found for that email.",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.CENTER,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: Colors.red,
-                                textColor: Colors.white,
-                                fontSize: 16.0);
-                          } else if (e.code == 'wrong-password') {
-                            Fluttertoast.showToast(
-                                msg: "Wrong password provided for that user.",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.CENTER,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: Colors.red,
-                                textColor: Colors.white,
-                                fontSize: 16.0);
+                      if (EmailValidator.validate(emailController.text)) {
+                        if (passwordController.text.isNotEmpty) {
+                          try {
+                            //showLoaderDialog(context);
+                            final credential = await FirebaseAuth.instance
+                                .signInWithEmailAndPassword(
+                                    email: emailController.text,
+                                    password: passwordController.text);
+                            //Navigator.pop(context);
+                            if (FirebaseAuth
+                                .instance.currentUser!.emailVerified) {
+                              Route route = MaterialPageRoute(
+                                  builder: (context) => const HomePage(
+                                        title: "Create CV",
+                                      ));
+                              Navigator.push(context, route);
+                            } else {
+                              Fluttertoast.showToast(
+                                  msg: "email is not registered or verified",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 2,
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 0, 0, 0),
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            }
+                          } on FirebaseAuthException catch (e) {
+                            if (e.code == 'user-not-found') {
+                              Fluttertoast.showToast(
+                                  msg: "No user found for that email.",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 2,
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 0, 0, 0),
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            } else if (e.code == 'wrong-password') {
+                              Fluttertoast.showToast(
+                                  msg: "Wrong password provided for that user.",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 2,
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 0, 0, 0),
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            }
                           }
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: "Please enter password",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 2,
+                              backgroundColor:
+                                  const Color.fromARGB(255, 0, 0, 0),
+                              textColor: Colors.white,
+                              fontSize: 16.0);
                         }
+                      } else {
+                        Fluttertoast.showToast(
+                            msg: "Please enter valid email",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 2,
+                            backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+                            textColor: Colors.white,
+                            fontSize: 16.0);
                       }
                     },
                     child: SizedBox(

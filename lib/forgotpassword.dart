@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cv_builder/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class resetPassword extends StatefulWidget {
   const resetPassword({super.key, required this.title});
@@ -15,8 +17,6 @@ class resetPassword extends StatefulWidget {
 class _resetPasswordState extends State<resetPassword> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +39,8 @@ class _resetPasswordState extends State<resetPassword> {
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(), labelText: "Email"),
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
+                    if (!EmailValidator.validate(emailController.text)) {
+                      return 'Please enter a valid email';
                     }
                     return null;
                   },
@@ -51,22 +51,33 @@ class _resetPasswordState extends State<resetPassword> {
                     const EdgeInsets.symmetric(horizontal: 8, vertical: 16.0),
                 child: Center(
                   child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        // Navigate the user to the Home page
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Please fill input')),
-                        );
-                      }
-                    },
-                    child: ElevatedButton(
-                      onPressed: () async {
+                    onPressed: () async {
+                      if (EmailValidator.validate(emailController.text)) {
+                        showLoaderDialog(context);
+
                         await FirebaseAuth.instance.sendPasswordResetEmail(
                             email: emailController.text);
-                      },
-                      child: Text('reset password'),
-                    ),
+                        Navigator.pop(context);
+                        Fluttertoast.showToast(
+                            msg: "email with reset link has been sent",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 2,
+                            backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      } else {
+                        Fluttertoast.showToast(
+                            msg: "please enter a valid email",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 2,
+                            backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      }
+                    },
+                    child: Text('reset password'),
                   ),
                 ),
               ),

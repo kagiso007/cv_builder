@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cv_builder/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -176,6 +178,14 @@ class _HomePageState extends State<HomePage> {
                             ));
                     Navigator.push(context, route);
                     await FirebaseAuth.instance.signOut();
+                    Fluttertoast.showToast(
+                        msg: "log out successful",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 2,
+                        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+                        textColor: Colors.white,
+                        fontSize: 16.0);
                   },
                   child: Text('sign out'),
                 ),
