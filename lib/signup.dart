@@ -3,7 +3,7 @@ import 'package:cv_builder/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignUP extends StatefulWidget {
   const SignUP({super.key, required this.title});
@@ -14,10 +14,24 @@ class SignUP extends StatefulWidget {
   State<SignUP> createState() => _SignUPState();
 }
 
+void _createNewUserInFirestore(String full_name, String biography) {
+  final user = FirebaseAuth.instance.currentUser;
+  final CollectionReference<Map<String, dynamic>> usersRef =
+      FirebaseFirestore.instance.collection('users');
+  usersRef.doc(user?.uid).set({
+    'id': user?.uid,
+    'displayName': full_name,
+    'photoUrl': user?.photoURL,
+    'bio': biography,
+  });
+}
+
 class _SignUPState extends State<SignUP> {
   final user = FirebaseAuth.instance.currentUser;
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
+  TextEditingController full_nameController = TextEditingController();
+  TextEditingController biographyController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
@@ -87,6 +101,39 @@ class _SignUPState extends State<SignUP> {
               ),
               Padding(
                 padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                child: TextFormField(
+                  controller: full_nameController,
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(), labelText: "full name"),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) {
+                    if (value != null && value.isEmpty) {
+                      return 'please enter your full name';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                child: TextFormField(
+                  controller: biographyController,
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "short biography"),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) {
+                    if (value != null && value.isEmpty) {
+                      return 'please enter biography';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Padding(
+                padding:
                     const EdgeInsets.symmetric(horizontal: 8, vertical: 16.0),
                 child: Center(
                   child: ElevatedButton(
@@ -101,6 +148,9 @@ class _SignUPState extends State<SignUP> {
                             password: passwordController.text,
                           );
                           await user?.sendEmailVerification();
+                          _createNewUserInFirestore(full_nameController.text,
+                              biographyController.text);
+
                           Fluttertoast.showToast(
                               msg: "account created succefully",
                               toastLength: Toast.LENGTH_SHORT,
