@@ -3,7 +3,6 @@ import 'package:cv_builder/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cv_builder/profilepage.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -140,6 +139,74 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Padding(
                   padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextFormField(
+                    controller: achievementPasswordController,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "any achievements"),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your password';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextFormField(
+                    controller: achievementPasswordController,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "any achievements"),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your password';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextFormField(
+                    controller: achievementPasswordController,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "any achievements"),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your password';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextFormField(
+                    controller: achievementPasswordController,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "any achievements"),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your password';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 16.0),
                   child: Center(
                     child: ElevatedButton(
@@ -156,7 +223,7 @@ class _HomePageState extends State<HomePage> {
                         onPressed: () {
                           // Navigate to a new page here
                         },
-                        child: Text('generate cv'),
+                        child: const Text('generate cv'),
                       ),
                     ),
                   ),
@@ -184,7 +251,7 @@ class _HomePageState extends State<HomePage> {
                                   ));
                           Navigator.push(context, route);
                         },
-                        child: Text('profile'),
+                        child: const Text('profile'),
                       ),
                     ),
                   ),
@@ -217,7 +284,7 @@ class _HomePageState extends State<HomePage> {
                           textColor: Colors.white,
                           fontSize: 16.0);
                     },
-                    child: Text('sign out'),
+                    child: const Text('sign out'),
                   ),
                 ),
               ],

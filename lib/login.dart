@@ -17,10 +17,10 @@ class Login extends StatefulWidget {
 
 showLoaderDialog(BuildContext context) {
   AlertDialog alert = AlertDialog(
-    content: new Row(
+    content: Row(
       children: [
-        CircularProgressIndicator(),
-        Container(margin: EdgeInsets.only(left: 7), child: Text("Loading...")),
+        const CircularProgressIndicator(),
+        Container(margin: const EdgeInsets.only(left: 7), child: const Text("Loading...")),
       ],
     ),
   );
@@ -163,7 +163,7 @@ class _LoginState extends State<Login> {
                             fontSize: 16.0);
                       }
                     },
-                    child: SizedBox(
+                    child: const SizedBox(
                       child: Text("LOGIN"),
                     ),
                   ),
@@ -172,22 +172,22 @@ class _LoginState extends State<Login> {
               ElevatedButton(
                 onPressed: () {
                   Route route = MaterialPageRoute(
-                      builder: (context) => SignUP(
+                      builder: (context) => const SignUP(
                             title: "signup",
                           ));
                   Navigator.push(context, route);
                 },
-                child: SizedBox(child: Text("signup")),
+                child: const SizedBox(child: Text("signup")),
               ),
               ElevatedButton(
                 onPressed: () {
                   Route route = MaterialPageRoute(
-                      builder: (context) => resetPassword(
+                      builder: (context) => const resetPassword(
                             title: "reset password",
                           ));
                   Navigator.push(context, route);
                 },
-                child: SizedBox(child: Text("forgot password?")),
+                child: const SizedBox(child: Text("forgot password?")),
               ),
             ],
           ),

@@ -3,7 +3,6 @@ import 'package:cv_builder/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class resetPassword extends StatefulWidget {
   const resetPassword({super.key, required this.title});
@@ -77,7 +76,7 @@ class _resetPasswordState extends State<resetPassword> {
                             fontSize: 16.0);
                       }
                     },
-                    child: Text('reset password'),
+                    child: const Text('reset password'),
                   ),
                 ),
               ),

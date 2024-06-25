@@ -14,13 +14,13 @@ class SignUP extends StatefulWidget {
   State<SignUP> createState() => _SignUPState();
 }
 
-void _createNewUserInFirestore(String full_name, String biography) {
+void _createNewUserInFirestore(String fullName, String biography) {
   final user = FirebaseAuth.instance.currentUser;
   final CollectionReference<Map<String, dynamic>> usersRef =
       FirebaseFirestore.instance.collection('users');
   usersRef.doc(user?.uid).set({
     'id': user?.uid,
-    'displayName': full_name,
+    'displayName': fullName,
     'photoUrl': user?.photoURL,
     'bio': biography,
   });
@@ -204,7 +204,7 @@ class _SignUPState extends State<SignUP> {
                             fontSize: 16.0);
                       }
                     },
-                    child: Text('sign up'),
+                    child: const Text('sign up'),
                   ),
                 ),
               ),
