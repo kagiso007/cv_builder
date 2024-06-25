@@ -222,7 +222,7 @@
 		</data>
 		<key>Frameworks/FirebaseDatabase.framework/FirebaseDatabase</key>
 		<data>
-		/DKWCGyoAUYsrFuE76LXaHek5jU=
+		0RtnlCmErN0WTB+GbcqHoryroPM=
 		</data>
 		<key>Frameworks/FirebaseDatabase.framework/Info.plist</key>
 		<data>
@@ -494,7 +494,7 @@
 		</data>
 		<key>Frameworks/grpc.framework/grpc</key>
 		<data>
-		5i8oQqo9d7S+bXQp7cJ/9eBB8o8=
+		Rt9kC4vSY9lYqJMDm7M558beQYQ=
 		</data>
 		<key>Frameworks/grpc.framework/grpc.bundle/Info.plist</key>
 		<data>
@@ -989,7 +989,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			i4v+x/0LozhN9MWIUJBhng54R40xgav2YvtbhmlUZ5k=
+			/2FGLQ8KWp3LjI/EzZsK1d2eEXKCP7kbs2rcxpY5hh4=
 			</data>
 		</dict>
 		<key>Frameworks/FirebaseDatabase.framework/Info.plist</key>
@@ -1465,7 +1465,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			QCI3ZK0tiy7bYBGCsc+e6YGOaK0Dyzc1EnSxcF/B2cc=
+			MrjkSRHpBz2YTgjQrLZI0I0tktBBsVQRA6ZpKD/R1pA=
 			</data>
 		</dict>
 		<key>Frameworks/grpc.framework/grpc.bundle/Info.plist</key>
