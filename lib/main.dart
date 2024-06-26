@@ -1,3 +1,4 @@
+import 'package:cv_builder/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const ProfilePage(title: 'CV BUILDER'),
+      home: const HomePage(title: 'CV BUILDER'),
       debugShowCheckedModeBanner: false,
     );
   }

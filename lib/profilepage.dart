@@ -27,9 +27,8 @@ void _updateUserDetails(
     'email': email,
     'password': password,
     'displayName': fullName,
-    'photoUrl': user?.photoURL,
     'bio': biography,
-  });
+  }, SetOptions(merge: true));
 }
 
 class _ProfilePageState extends State<ProfilePage> {
@@ -219,6 +218,7 @@ class _ProfilePageState extends State<ProfilePage> {
           emailController.text = document['email'];
           usernameController.text = document['displayName'];
           bioController.text = document['bio'];
+          _imageUrl = document['photoUrl'];
         });
       } else {
         setState(() {
@@ -226,6 +226,7 @@ class _ProfilePageState extends State<ProfilePage> {
           emailController.text = "email";
           usernameController.text = "full name";
           bioController.text = "biography";
+          _imageUrl = "https://cdn.pixabay.com/photo/2015/10/05/";
         });
       }
     });
