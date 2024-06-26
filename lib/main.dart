@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Login(title: 'CV BUILDER'),
+      home: const ProfilePage(title: 'CV BUILDER'),
       debugShowCheckedModeBanner: false,
     );
   }
