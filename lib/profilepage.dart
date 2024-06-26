@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key, required this.title});
@@ -11,13 +13,75 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
+void _getUserDetails() async {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  User? user = auth.currentUser;
+  String userId = user?.uid ?? '';
+  DocumentReference userDocument = firestore.collection('users').doc(userId);
+
+  userDocument.get().then((DocumentSnapshot document) {
+    if (document.exists) {
+      print('User Data: ${document.data()}');
+      print(document['displayName']);
+      print(document['bio']);
+    } else {
+      print('No user data found');
+    }
+  });
+}
+
 class _ProfilePageState extends State<ProfilePage> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final _formKey = GlobalKey<FormState>();
-  DatabaseReference ref = FirebaseDatabase.instance.ref();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   TextEditingController bioController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    User? user = auth.currentUser;
+    String userId = user?.uid ?? '';
+
+    DocumentReference userDocument = firestore.collection('users').doc(userId);
+
+    userDocument.get().then((DocumentSnapshot document) {
+      if (document.exists) {
+        setState(() {
+          passwordController.text = document['password'];
+          emailController.text = document['email'];
+          usernameController.text = document['displayName'];
+          bioController.text = document['bio'];
+        });
+      } else {
+        setState(() {
+          passwordController.text = "password";
+          emailController.text = "email";
+          usernameController.text = "full name";
+          bioController.text = "biography";
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+    super.dispose();
+  }
+
+  void _submitForm() {
+    if (_formKey.currentState?.validate() ?? false) {
+      String inputValue = usernameController.text;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +89,7 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
+
       body: Form(
         key: _formKey,
         child: Padding(
@@ -100,64 +165,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     validator: (value) {
                       if (value != null && value.isEmpty) {
-                        return 'Please enter your short biography';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  child: TextFormField(
-                    controller: bioController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "biography",
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 50.0, horizontal: 10.0),
-                    ),
-                    validator: (value) {
-                      if (value != null && value.isEmpty) {
-                        return 'Please enter your short biography';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  child: TextFormField(
-                    controller: bioController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "biography",
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 50.0, horizontal: 10.0),
-                    ),
-                    validator: (value) {
-                      if (value != null && value.isEmpty) {
-                        return 'Please enter your short biography';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  child: TextFormField(
-                    controller: bioController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "biography",
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 50.0, horizontal: 10.0),
-                    ),
-                    validator: (value) {
-                      if (value != null && value.isEmpty) {
-                        return 'Please enter your short biography';
+                        return 'please enter your biography';
                       }
                       return null;
                     },
@@ -168,7 +176,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 16.0),
                   child: Center(
                     child: ElevatedButton(
-                      onPressed: () async {},
+                      onPressed: () async {
+                        _getUserDetails();
+                        _submitForm();
+                      },
                       child: const Text('update profile'),
                     ),
                   ),
