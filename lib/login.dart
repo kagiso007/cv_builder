@@ -246,10 +246,10 @@ class _LoginState extends State<Login> {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                      textStyle:
-                          const TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 50, vertical: 20),
+                      textStyle: const TextStyle(
+                          fontSize: 10, fontWeight: FontWeight.bold)),
                   onPressed: () {
                     Route route = MaterialPageRoute(
                         builder: (context) => const SignUP(

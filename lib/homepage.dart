@@ -4,6 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cv_builder/profilepage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:cv_builder/predicted_text_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -13,6 +17,18 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
+
+/*class PredictiveTextProvider with ChangeNotifier {
+  final PredictiveTextService _service = PredictiveTextService();
+  String _predictedText = '';
+
+  String get predictedText => _predictedText;
+
+  void fetchPredictiveText(String inputText) async {
+    _predictedText = await _service.getPredictiveText(inputText);
+    notifyListeners();
+  }
+}*/
 
 void _updateUserDetails(
     String fullName,
@@ -194,7 +210,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         prefixIcon: Icon(
-                          Icons.person,
+                          Icons.school,
                           color: Colors.blue,
                         ),
                         hintText: "Enter your high school backround",
@@ -213,6 +229,9 @@ class _HomePageState extends State<HomePage> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                   child: TextFormField(
+                    onChanged: (text) {
+                      //provider.fetchPredictiveText(text);
+                    },
                     controller: experienceController,
                     decoration: const InputDecoration(
                         focusedBorder: UnderlineInputBorder(
@@ -224,7 +243,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         prefixIcon: Icon(
-                          Icons.person,
+                          Icons.factory,
                           color: Colors.blue,
                         ),
                         hintText: "Enter your work experience",
@@ -238,6 +257,8 @@ class _HomePageState extends State<HomePage> {
                     },
                   ),
                 ),
+                SizedBox(height: 20),
+                const Text("Predicted Text:"),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
@@ -253,7 +274,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         prefixIcon: Icon(
-                          Icons.person,
+                          Icons.school,
                           color: Colors.blue,
                         ),
                         hintText: "Enter your university background",
@@ -311,7 +332,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         prefixIcon: Icon(
-                          Icons.person,
+                          Icons.card_giftcard,
                           color: Colors.blue,
                         ),
                         hintText: "Enter your achievements and extra murals",
