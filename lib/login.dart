@@ -53,7 +53,7 @@ class _LoginState extends State<Login> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Container(
+                SizedBox(
                   height: 400,
                   child: Stack(
                     children: <Widget>[
@@ -247,9 +247,9 @@ class _LoginState extends State<Login> {
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                       padding:
-                          EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                          const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                       textStyle:
-                          TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+                          const TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
                   onPressed: () {
                     Route route = MaterialPageRoute(
                         builder: (context) => const SignUP(

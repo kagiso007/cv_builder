@@ -132,7 +132,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 TextFormField(
                   controller: confirmPasswordController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue),
                       ),
@@ -162,7 +162,7 @@ class _ProfilePageState extends State<ProfilePage> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -228,7 +228,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Navigator.of(context).pop();
                 }
               },
-              child: Text('Submit'),
+              child: const Text('Submit'),
             ),
           ],
         ),
@@ -303,9 +303,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                       padding:
-                          EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                          const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                       textStyle:
-                          TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+                          const TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
                   onPressed: _pickAndUploadImage,
                   child: const Text('Change Profile Picture'),
                 ),
@@ -327,7 +327,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           Icons.person,
                           color: Colors.blue,
                         ),
-                        hintText: "Enter your email",
+                        hintText: "Enter your full name",
                         border: OutlineInputBorder(),
                         labelText: "full name"),
                     validator: (value) {
@@ -353,7 +353,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                         prefixIcon: Icon(
-                          Icons.person,
+                          Icons.mail,
                           color: Colors.blue,
                         ),
                         hintText: "Enter your email",
@@ -390,7 +390,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         labelText: "password"),
                     validator: (value) {
                       if (value != null && value.isEmpty) {
-                        return 'Please enter a valid email';
+                        return 'Please enter a valid passoword';
                       }
                       return null;
                     },
@@ -414,7 +414,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Icons.person,
                         color: Colors.blue,
                       ),
-                      hintText: "Enter your email",
+                      hintText: "Enter your biography",
                       border: OutlineInputBorder(),
                       labelText: "biography",
                       contentPadding: EdgeInsets.symmetric(
@@ -435,9 +435,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 50, vertical: 20),
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                               fontSize: 10, fontWeight: FontWeight.bold)),
                       onPressed: () async {
                         openDialog();
@@ -449,7 +449,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         User? user = auth.currentUser;
                         if (user != null) {
                           //await user?.reauthenticateWithCredential(credential);
-                          await user?.updatePassword(passwordController.text);
+                          await user.updatePassword(passwordController.text);
                           //await user?.updateEmail(emailController.text);
                         }
 

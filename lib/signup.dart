@@ -212,8 +212,8 @@ class _SignUPState extends State<SignUP> {
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
                         padding:
-                            EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                        textStyle: TextStyle(
+                            const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                        textStyle: const TextStyle(
                             fontSize: 10, fontWeight: FontWeight.bold)),
                     onPressed: () async {
                       if (passwordController.text ==

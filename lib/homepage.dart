@@ -3,7 +3,6 @@ import 'package:cv_builder/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cv_builder/profilepage.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatefulWidget {
@@ -107,87 +106,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  /*Future openDialog() => showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('warning'),
-          content: const TextField(
-            style: TextStyle(),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('NO'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                if (_formKey.currentState?.validate() ?? false) {
-                  await FirebaseAuth.instance.currentUser?.reload();
-                  if (EmailValidator.validate(emailController.text)) {
-                    if (emailController.text.isNotEmpty) {
-                      try {
-                        //showLoaderDialog(context);
-
-                        Navigator.of(context).pop();
-                        Route route = MaterialPageRoute(
-                            builder: (context) => const HomePage(
-                                  title: "Create CV",
-                                ));
-                        Navigator.push(context, route);
-                      } on FirebaseAuthException catch (e) {
-                        if (e.code == 'user-not-found') {
-                          Fluttertoast.showToast(
-                              msg: "No user found for that email.",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              timeInSecForIosWeb: 2,
-                              backgroundColor:
-                                  const Color.fromARGB(255, 0, 0, 0),
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                        } else if (e.code == 'wrong-password') {
-                          Fluttertoast.showToast(
-                              msg: "Wrong password provided for that user.",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              timeInSecForIosWeb: 2,
-                              backgroundColor:
-                                  const Color.fromARGB(255, 0, 0, 0),
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                        }
-                      }
-                    } else {
-                      Fluttertoast.showToast(
-                          msg: "Please enter password",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 2,
-                          backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-                          textColor: Colors.white,
-                          fontSize: 16.0);
-                    }
-                  } else {
-                    Fluttertoast.showToast(
-                        msg: "Please enter valid email",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 2,
-                        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-                        textColor: Colors.white,
-                        fontSize: 16.0);
-                  }
-                  Navigator.of(context).pop();
-                }
-              },
-              child: Text('YES'),
-            ),
-          ],
-        ),
-      );*/
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -221,12 +139,12 @@ class _HomePageState extends State<HomePage> {
                           Icons.person,
                           color: Colors.blue,
                         ),
-                        hintText: "Enter your email",
+                        hintText: "Enter your full name",
                         border: OutlineInputBorder(),
                         labelText: "Enter full name"),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your email';
+                        return 'Please enter your full name';
                       }
                       return null;
                     },
@@ -250,12 +168,12 @@ class _HomePageState extends State<HomePage> {
                           Icons.person,
                           color: Colors.blue,
                         ),
-                        hintText: "Enter your email",
+                        hintText: "Enter your your ID number",
                         border: OutlineInputBorder(),
-                        labelText: "please enter your ID"),
+                        labelText: "please enter your ID number"),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your email';
+                        return 'Please enter your ID number';
                       }
                       return null;
                     },
@@ -279,12 +197,13 @@ class _HomePageState extends State<HomePage> {
                           Icons.person,
                           color: Colors.blue,
                         ),
-                        hintText: "Enter your email",
+                        hintText: "Enter your high school backround",
                         border: OutlineInputBorder(),
-                        labelText: "where did you attend high school"),
+                        labelText:
+                            "when did you matriculate and in which subjects"),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your password';
+                        return 'Please enter your high school background';
                       }
                       return null;
                     },
@@ -308,12 +227,12 @@ class _HomePageState extends State<HomePage> {
                           Icons.person,
                           color: Colors.blue,
                         ),
-                        hintText: "Enter your email",
+                        hintText: "Enter your work experience",
                         border: OutlineInputBorder(),
-                        labelText: "any experience?"),
+                        labelText: "any work experience?"),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your password';
+                        return 'Please enter your work experince';
                       }
                       return null;
                     },
@@ -337,12 +256,12 @@ class _HomePageState extends State<HomePage> {
                           Icons.person,
                           color: Colors.blue,
                         ),
-                        hintText: "Enter your email",
+                        hintText: "Enter your university background",
                         border: OutlineInputBorder(),
-                        labelText: "where did you attend uiversity"),
+                        labelText: "university background"),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your password';
+                        return 'Please enter your university background';
                       }
                       return null;
                     },
@@ -366,7 +285,7 @@ class _HomePageState extends State<HomePage> {
                           Icons.person,
                           color: Colors.blue,
                         ),
-                        hintText: "Enter your email",
+                        hintText: "Enter your biography",
                         border: OutlineInputBorder(),
                         labelText: "short biography"),
                     validator: (value) {
@@ -395,12 +314,12 @@ class _HomePageState extends State<HomePage> {
                           Icons.person,
                           color: Colors.blue,
                         ),
-                        hintText: "Enter your email",
+                        hintText: "Enter your achievements and extra murals",
                         border: OutlineInputBorder(),
-                        labelText: "any achievements"),
+                        labelText: "any achievements and extra murals"),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your achievements';
+                        return 'Please enter your achievements and extra murals';
                       }
                       return null;
                     },
@@ -423,9 +342,9 @@ class _HomePageState extends State<HomePage> {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue,
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 50, vertical: 20),
-                            textStyle: TextStyle(
+                            textStyle: const TextStyle(
                                 fontSize: 10, fontWeight: FontWeight.bold)),
                         onPressed: () {
                           _updateUserDetails(
@@ -461,9 +380,9 @@ class _HomePageState extends State<HomePage> {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue,
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 50, vertical: 20),
-                            textStyle: TextStyle(
+                            textStyle: const TextStyle(
                                 fontSize: 10, fontWeight: FontWeight.bold)),
                         onPressed: () {
                           // Navigate to a new page here
@@ -490,9 +409,9 @@ class _HomePageState extends State<HomePage> {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue,
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 50, vertical: 20),
-                            textStyle: TextStyle(
+                            textStyle: const TextStyle(
                                 fontSize: 10, fontWeight: FontWeight.bold)),
                         onPressed: () {
                           // Navigate to a new page here
@@ -520,9 +439,9 @@ class _HomePageState extends State<HomePage> {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                        textStyle: TextStyle(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 50, vertical: 20),
+                        textStyle: const TextStyle(
                             fontSize: 10, fontWeight: FontWeight.bold)),
                     onPressed: () async {
                       // Navigate to a new page here
