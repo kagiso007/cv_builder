@@ -107,7 +107,22 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 TextFormField(
                   controller: confirmEmailController,
-                  decoration: const InputDecoration(labelText: 'Email'),
+                  decoration: const InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                        ),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.person,
+                        color: Colors.blue,
+                      ),
+                      hintText: "Enter your email",
+                      hintStyle: TextStyle(color: Colors.blue),
+                      labelText: 'Email'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your email';
@@ -117,7 +132,21 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 TextFormField(
                   controller: confirmPasswordController,
-                  decoration: InputDecoration(labelText: 'password'),
+                  decoration: InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                        ),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.person,
+                        color: Colors.blue,
+                      ),
+                      hintText: "Enter your email",
+                      labelText: 'password'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your current password';
@@ -249,6 +278,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        backgroundColor: Colors.blue,
       ),
 
       body: Form(
@@ -270,6 +300,12 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                 const SizedBox(height: 20),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                      textStyle:
+                          TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
                   onPressed: _pickAndUploadImage,
                   child: const Text('Change Profile Picture'),
                 ),
@@ -279,7 +315,21 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: TextFormField(
                     controller: usernameController,
                     decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: "full name"),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.blue,
+                        ),
+                        hintText: "Enter your email",
+                        border: OutlineInputBorder(),
+                        labelText: "full name"),
                     validator: (value) {
                       if (value != null && value.isEmpty) {
                         return 'Please enter full name';
@@ -294,7 +344,21 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: TextFormField(
                     controller: emailController,
                     decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: "Email"),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.blue,
+                        ),
+                        hintText: "Enter your email",
+                        border: OutlineInputBorder(),
+                        labelText: "Email"),
                     validator: (value) {
                       if (!EmailValidator.validate(emailController.text)) {
                         return 'Please enter a valid email';
@@ -309,7 +373,21 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: TextFormField(
                     controller: passwordController,
                     decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: "password"),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.lock,
+                          color: Colors.blue,
+                        ),
+                        hintText: "Enter your password",
+                        border: OutlineInputBorder(),
+                        labelText: "password"),
                     validator: (value) {
                       if (value != null && value.isEmpty) {
                         return 'Please enter a valid email';
@@ -324,6 +402,19 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: TextFormField(
                     controller: bioController,
                     decoration: const InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                        ),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.person,
+                        color: Colors.blue,
+                      ),
+                      hintText: "Enter your email",
                       border: OutlineInputBorder(),
                       labelText: "biography",
                       contentPadding: EdgeInsets.symmetric(
@@ -342,6 +433,12 @@ class _ProfilePageState extends State<ProfilePage> {
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 16.0),
                   child: Center(
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 50, vertical: 20),
+                          textStyle: TextStyle(
+                              fontSize: 10, fontWeight: FontWeight.bold)),
                       onPressed: () async {
                         openDialog();
                         _updateUserDetails(

@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(title: 'CV BUILDER'),
+      home: const Login(title: 'CV BUILDER'),
       debugShowCheckedModeBanner: false,
     );
   }

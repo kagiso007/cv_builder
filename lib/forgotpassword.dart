@@ -22,6 +22,7 @@ class _resetPasswordState extends State<resetPassword> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        backgroundColor: Colors.blue,
       ),
       body: Form(
         key: _formKey,
@@ -36,7 +37,22 @@ class _resetPasswordState extends State<resetPassword> {
                 child: TextFormField(
                   controller: emailController,
                   decoration: const InputDecoration(
-                      border: OutlineInputBorder(), labelText: "Email"),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                        ),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.mail,
+                        color: Colors.blue,
+                      ),
+                      hintText: "Enter your Email",
+                      hintStyle: TextStyle(color: Colors.blue),
+                      border: OutlineInputBorder(),
+                      labelText: "Email"),
                   validator: (value) {
                     if (!EmailValidator.validate(emailController.text)) {
                       return 'Please enter a valid email';
@@ -50,6 +66,14 @@ class _resetPasswordState extends State<resetPassword> {
                     const EdgeInsets.symmetric(horizontal: 8, vertical: 16.0),
                 child: Center(
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 50, vertical: 20),
+                        textStyle: const TextStyle(
+                            color: Colors.white10,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold)),
                     onPressed: () async {
                       if (EmailValidator.validate(emailController.text)) {
                         showLoaderDialog(context);

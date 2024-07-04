@@ -193,6 +193,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        backgroundColor: Colors.blue,
       ),
       body: Form(
         key: _formKey,
@@ -208,6 +209,19 @@ class _HomePageState extends State<HomePage> {
                   child: TextFormField(
                     controller: usernameController,
                     decoration: const InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.blue,
+                        ),
+                        hintText: "Enter your email",
                         border: OutlineInputBorder(),
                         labelText: "Enter full name"),
                     validator: (value) {
@@ -224,6 +238,19 @@ class _HomePageState extends State<HomePage> {
                   child: TextFormField(
                     controller: IDController,
                     decoration: const InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.blue,
+                        ),
+                        hintText: "Enter your email",
                         border: OutlineInputBorder(),
                         labelText: "please enter your ID"),
                     validator: (value) {
@@ -240,6 +267,19 @@ class _HomePageState extends State<HomePage> {
                   child: TextFormField(
                     controller: highSchoolPasswordController,
                     decoration: const InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.blue,
+                        ),
+                        hintText: "Enter your email",
                         border: OutlineInputBorder(),
                         labelText: "where did you attend high school"),
                     validator: (value) {
@@ -256,6 +296,19 @@ class _HomePageState extends State<HomePage> {
                   child: TextFormField(
                     controller: experienceController,
                     decoration: const InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.blue,
+                        ),
+                        hintText: "Enter your email",
                         border: OutlineInputBorder(),
                         labelText: "any experience?"),
                     validator: (value) {
@@ -272,6 +325,19 @@ class _HomePageState extends State<HomePage> {
                   child: TextFormField(
                     controller: tertiaryController,
                     decoration: const InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.blue,
+                        ),
+                        hintText: "Enter your email",
                         border: OutlineInputBorder(),
                         labelText: "where did you attend uiversity"),
                     validator: (value) {
@@ -288,6 +354,19 @@ class _HomePageState extends State<HomePage> {
                   child: TextFormField(
                     controller: biographyController,
                     decoration: const InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.blue,
+                        ),
+                        hintText: "Enter your email",
                         border: OutlineInputBorder(),
                         labelText: "short biography"),
                     validator: (value) {
@@ -304,6 +383,19 @@ class _HomePageState extends State<HomePage> {
                   child: TextFormField(
                     controller: achievementController,
                     decoration: const InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.blue,
+                        ),
+                        hintText: "Enter your email",
                         border: OutlineInputBorder(),
                         labelText: "any achievements"),
                     validator: (value) {
@@ -329,6 +421,12 @@ class _HomePageState extends State<HomePage> {
                         }
                       },
                       child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 50, vertical: 20),
+                            textStyle: TextStyle(
+                                fontSize: 10, fontWeight: FontWeight.bold)),
                         onPressed: () {
                           _updateUserDetails(
                               usernameController.text,
@@ -361,6 +459,12 @@ class _HomePageState extends State<HomePage> {
                         }
                       },
                       child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 50, vertical: 20),
+                            textStyle: TextStyle(
+                                fontSize: 10, fontWeight: FontWeight.bold)),
                         onPressed: () {
                           // Navigate to a new page here
                         },
@@ -384,6 +488,12 @@ class _HomePageState extends State<HomePage> {
                         }
                       },
                       child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 50, vertical: 20),
+                            textStyle: TextStyle(
+                                fontSize: 10, fontWeight: FontWeight.bold)),
                         onPressed: () {
                           // Navigate to a new page here
                           Route route = MaterialPageRoute(
@@ -408,6 +518,12 @@ class _HomePageState extends State<HomePage> {
                     }
                   },
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                        textStyle: TextStyle(
+                            fontSize: 10, fontWeight: FontWeight.bold)),
                     onPressed: () async {
                       // Navigate to a new page here
                       Route route = MaterialPageRoute(

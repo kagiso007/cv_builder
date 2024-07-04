@@ -43,6 +43,7 @@ class _SignUPState extends State<SignUP> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        backgroundColor: Colors.blue,
       ),
       body: Form(
         key: _formKey,
@@ -57,7 +58,21 @@ class _SignUPState extends State<SignUP> {
                 child: TextFormField(
                   controller: emailController,
                   decoration: const InputDecoration(
-                      border: OutlineInputBorder(), labelText: "Email"),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                        ),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.mail,
+                        color: Colors.blue,
+                      ),
+                      hintText: "Enter your email",
+                      border: OutlineInputBorder(),
+                      labelText: "Email"),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value) {
                     if (!EmailValidator.validate(emailController.text)) {
@@ -74,7 +89,21 @@ class _SignUPState extends State<SignUP> {
                   controller: passwordController,
                   obscureText: true,
                   decoration: const InputDecoration(
-                      border: OutlineInputBorder(), labelText: "Password"),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                        ),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.lock,
+                        color: Colors.blue,
+                      ),
+                      hintText: "Enter your email",
+                      border: OutlineInputBorder(),
+                      labelText: "Password"),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value) {
                     if (value != null && value.isEmpty) {
@@ -91,6 +120,19 @@ class _SignUPState extends State<SignUP> {
                   controller: confirmPasswordController,
                   obscureText: true,
                   decoration: const InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                        ),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.lock,
+                        color: Colors.blue,
+                      ),
+                      hintText: "Enter your email",
                       border: OutlineInputBorder(),
                       labelText: "Confirm Password"),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -108,7 +150,21 @@ class _SignUPState extends State<SignUP> {
                 child: TextFormField(
                   controller: full_nameController,
                   decoration: const InputDecoration(
-                      border: OutlineInputBorder(), labelText: "full name"),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                        ),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.person,
+                        color: Colors.blue,
+                      ),
+                      hintText: "Enter your email",
+                      border: OutlineInputBorder(),
+                      labelText: "full name"),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value) {
                     if (value != null && value.isEmpty) {
@@ -124,6 +180,19 @@ class _SignUPState extends State<SignUP> {
                 child: TextFormField(
                   controller: biographyController,
                   decoration: const InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                        ),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.person,
+                        color: Colors.blue,
+                      ),
+                      hintText: "Enter your email",
                       border: OutlineInputBorder(),
                       labelText: "short biography"),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -140,6 +209,12 @@ class _SignUPState extends State<SignUP> {
                     const EdgeInsets.symmetric(horizontal: 8, vertical: 16.0),
                 child: Center(
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                        textStyle: TextStyle(
+                            fontSize: 10, fontWeight: FontWeight.bold)),
                     onPressed: () async {
                       if (passwordController.text ==
                               confirmPasswordController.text &&
