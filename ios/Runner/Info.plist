@@ -53,5 +53,9 @@
 	<string>Allow access to camera to capture photos</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Allow access to microphone</string>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
+	<key>UIFileSharingEnabled</key>
+	<true/>
 </dict>
 </plist>

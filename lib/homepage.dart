@@ -4,10 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cv_builder/profilepage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:convert';
-import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
-import 'package:cv_builder/predicted_text_service.dart';
+import 'dart:io';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:path_provider/path_provider.dart';
+import 'dart:async';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:path/path.dart' as path;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -68,13 +70,127 @@ class _HomePageState extends State<HomePage> {
   TextEditingController biographyController = TextEditingController();
   TextEditingController achievementController = TextEditingController();
   final String password = "";
+  bool isLoading = false;
   final String photoURL = "";
+  String message = '';
+
+  Future<List<Map<String, dynamic>>> fetchUsers() async {
+    List<Map<String, dynamic>> users = [];
+    QuerySnapshot snapshot =
+        await FirebaseFirestore.instance.collection('users').get();
+
+    for (var doc in snapshot.docs) {
+      users.add(doc.data() as Map<String, dynamic>);
+    }
+
+    return users;
+  }
+
+  void _generatePdf() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      List<Map<String, dynamic>> users = await fetchUsers();
+      await generatePdf(users);
+      setState(() {
+        message = 'PDF generated successfully!';
+      });
+    } catch (e) {
+      setState(() {
+        message = 'Error generating PDF: $e';
+      });
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     fetchUserData();
+    requestPermissions();
   }
+
+  Future<void> requestPermissions() async {
+    if (Platform.isAndroid) {
+      await Permission.storage.request();
+    }
+  }
+
+  final CollectionReference collectionReference =
+      FirebaseFirestore.instance.collection('users');
+
+  Future<List<Map<String, dynamic>>> fetchData() async {
+    QuerySnapshot querySnapshot = await collectionReference.get();
+    return querySnapshot.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
+  }
+
+  Future<void> generatePdf(List<Map<String, dynamic>> data) async {
+    final pdf = pw.Document();
+
+    for (var item in data) {
+      // Extract specific attributes from Firestore document
+      String name = item['displayName'];
+      String email = item['email'];
+      String bio = item['bio'];
+      String id_number = item['id_number'];
+      String high_school = item['high_school'];
+      String tertiary = item['tertiary'];
+      String achievements = item['achievements'];
+
+      // Add content to PDF
+      pdf.addPage(
+        pw.Page(
+          build: (pw.Context context) => pw.Center(
+            child: pw.Column(
+              mainAxisAlignment: pw.MainAxisAlignment.center,
+              children: [
+                pw.Text('Name: $name'),
+                pw.Text('Email: $email'),
+                pw.Text('bio: $bio '),
+                pw.Text('id_number:  $id_number'),
+                pw.Text('high_school: $high_school'),
+                pw.Text('university: $tertiary'),
+                pw.Text('achievements: $achievements'),
+                pw.SizedBox(height: 20),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    Directory? output;
+    if (Platform.isAndroid) {
+      // For Android, use the Downloads directory
+      output = Directory('/storage/emulated/0/Download');
+      if (!(await output.exists())) {
+        output = await getExternalStorageDirectory();
+      }
+    } else if (Platform.isIOS) {
+      // For iOS, use the application documents directory
+      output = await getApplicationDocumentsDirectory();
+    }
+
+    final file = File(path.join(output!.path, 'curriculum_vitae.pdf'));
+    await file.writeAsBytes(await pdf.save());
+    print('PDF saved: ${file.path}');
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('PDF saved to ${file.path}')),
+    );
+  }
+
+  /*Future<void> getFilePath(String filename) async {
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    String appDocPath = appDocDir.path;
+    return join(appDocPath,filename);
+  }*/
 
   Future<void> fetchUserData() async {
     User? user = auth.currentUser;
@@ -257,7 +373,7 @@ class _HomePageState extends State<HomePage> {
                     },
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 const Text("Predicted Text:"),
                 Padding(
                   padding:
@@ -390,6 +506,8 @@ class _HomePageState extends State<HomePage> {
                   child: Center(
                     child: ElevatedButton(
                       onPressed: () {
+                        _generatePdf;
+                        print("hello");
                         if (_formKey.currentState!.validate()) {
                           // Navigate the user to the Home page
                         } else {
@@ -405,8 +523,12 @@ class _HomePageState extends State<HomePage> {
                                 horizontal: 50, vertical: 20),
                             textStyle: const TextStyle(
                                 fontSize: 10, fontWeight: FontWeight.bold)),
-                        onPressed: () {
+                        onPressed: () async {
                           // Navigate to a new page here
+                          _generatePdf;
+                          List<Map<String, dynamic>> data = await fetchData();
+                          await generatePdf(data);
+                          print("hello agian");
                         },
                         child: const Text('generate cv'),
                       ),
