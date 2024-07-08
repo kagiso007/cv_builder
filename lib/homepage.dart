@@ -10,6 +10,11 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path/path.dart' as path;
+import 'package:flutter/material.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -143,24 +148,61 @@ class _HomePageState extends State<HomePage> {
       String high_school = item['high_school'];
       String tertiary = item['tertiary'];
       String achievements = item['achievements'];
+      final imageUrl = item['photoUrl'];
+      final response = await http.get(Uri.parse(imageUrl));
+      final image = pw.MemoryImage(response.bodyBytes);
 
       // Add content to PDF
       pdf.addPage(
         pw.Page(
-          build: (pw.Context context) => pw.Center(
-            child: pw.Column(
-              mainAxisAlignment: pw.MainAxisAlignment.center,
-              children: [
-                pw.Text('Name: $name'),
-                pw.Text('Email: $email'),
-                pw.Text('bio: $bio '),
-                pw.Text('id_number:  $id_number'),
-                pw.Text('high_school: $high_school'),
-                pw.Text('university: $tertiary'),
-                pw.Text('achievements: $achievements'),
-                pw.SizedBox(height: 20),
-              ],
-            ),
+          build: (pw.Context context) => pw.Column(
+            children: [
+              pw.Text(
+                'Curriculum Vitae',
+                style:
+                    pw.TextStyle(fontSize: 40, fontWeight: pw.FontWeight.bold),
+              ),
+              pw.SizedBox(height: 20),
+              pw.Container(
+                width: double.infinity,
+                padding: pw.EdgeInsets.all(16),
+                decoration: pw.BoxDecoration(
+                  color: PdfColors.grey300,
+                  borderRadius: pw.BorderRadius.circular(8),
+                ),
+                child: pw.Text(bio),
+              ),
+              pw.SizedBox(height: 20),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.SizedBox(width: 50),
+                  pw.Container(
+                    width: 150,
+                    height: 150,
+                    decoration: pw.BoxDecoration(
+                      shape: pw.BoxShape.circle,
+                      image: pw.DecorationImage(
+                        image: image,
+                        fit: pw.BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  pw.SizedBox(width: 10),
+                ],
+              ),
+              pw.SizedBox(height: 20),
+              pw.TableHelper.fromTextArray(
+                data: [
+                  ['Name ', name],
+                  ['Email ', email],
+                  ['identity number', id_number],
+                  ['high_school ', high_school],
+                  ['higher education ', tertiary],
+                  ['Achievements ', achievements],
+                ],
+              ),
+            ],
           ),
         ),
       );
