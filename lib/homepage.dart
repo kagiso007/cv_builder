@@ -10,10 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path/path.dart' as path;
-import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
 import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
@@ -144,8 +141,8 @@ class _HomePageState extends State<HomePage> {
       String name = item['displayName'];
       String email = item['email'];
       String bio = item['bio'];
-      String id_number = item['id_number'];
-      String high_school = item['high_school'];
+      String idNumber = item['id_number'];
+      String highSchool = item['high_school'];
       String tertiary = item['tertiary'];
       String achievements = item['achievements'];
       final imageUrl = item['photoUrl'];
@@ -165,7 +162,7 @@ class _HomePageState extends State<HomePage> {
               pw.SizedBox(height: 20),
               pw.Container(
                 width: double.infinity,
-                padding: pw.EdgeInsets.all(16),
+                padding: const pw.EdgeInsets.all(16),
                 decoration: pw.BoxDecoration(
                   color: PdfColors.grey300,
                   borderRadius: pw.BorderRadius.circular(8),
@@ -196,8 +193,8 @@ class _HomePageState extends State<HomePage> {
                 data: [
                   ['Name ', name],
                   ['Email ', email],
-                  ['identity number', id_number],
-                  ['high_school ', high_school],
+                  ['identity number', idNumber],
+                  ['high_school ', highSchool],
                   ['higher education ', tertiary],
                   ['Achievements ', achievements],
                 ],
