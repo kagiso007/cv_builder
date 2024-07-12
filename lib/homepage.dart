@@ -145,9 +145,9 @@ class _HomePageState extends State<HomePage> {
       String highSchool = item['high_school'];
       String tertiary = item['tertiary'];
       String achievements = item['achievements'];
-      final imageUrl = item['photoUrl'];
-      final response = await http.get(Uri.parse(imageUrl));
-      final image = pw.MemoryImage(response.bodyBytes);
+      //final imageUrl = item['photoUrl'];
+      //final response = await http.get(Uri.parse(imageUrl));
+      //final image = pw.MemoryImage(response.bodyBytes);
 
       // Add content to PDF
       pdf.addPage(
@@ -174,7 +174,7 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                 children: [
                   pw.SizedBox(width: 50),
-                  pw.Container(
+                  /*pw.Container(
                     width: 150,
                     height: 150,
                     decoration: pw.BoxDecoration(
@@ -185,7 +185,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  pw.SizedBox(width: 10),
+                  pw.SizedBox(width: 10),*/
                 ],
               ),
               pw.SizedBox(height: 20),
@@ -533,6 +533,15 @@ class _HomePageState extends State<HomePage> {
                               highSchoolPasswordController.text,
                               tertiaryController.text);
                           // Navigate to a new page here
+                          Fluttertoast.showToast(
+                              msg: "details saved successfully",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 2,
+                              backgroundColor:
+                                  const Color.fromARGB(255, 0, 0, 0),
+                              textColor: Colors.white,
+                              fontSize: 16.0);
                         },
                         child: const Text('save'),
                       ),
@@ -567,7 +576,6 @@ class _HomePageState extends State<HomePage> {
                           _generatePdf;
                           List<Map<String, dynamic>> data = await fetchData();
                           await generatePdf(data);
-                          print("hello agian");
                         },
                         child: const Text('generate cv'),
                       ),
