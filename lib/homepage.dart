@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cv_builder/login.dart';
+import 'package:cv_builder/api.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cv_builder/profilepage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 import 'dart:io';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
@@ -12,6 +14,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:path/path.dart' as path;
 import 'package:pdf/pdf.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:google_generative_ai/google_generative_ai.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -21,18 +25,6 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
-
-/*class PredictiveTextProvider with ChangeNotifier {
-  final PredictiveTextService _service = PredictiveTextService();
-  String _predictedText = '';
-
-  String get predictedText => _predictedText;
-
-  void fetchPredictiveText(String inputText) async {
-    _predictedText = await _service.getPredictiveText(inputText);
-    notifyListeners();
-  }
-}*/
 
 void _updateUserDetails(
     String fullName,
@@ -60,6 +52,18 @@ void _updateUserDetails(
 }
 
 class _HomePageState extends State<HomePage> {
+  APIKEY apikey = APIKEY();
+  late GenerativeModel model;
+  TextEditingController experienceController = TextEditingController();
+  generate() async {
+    final prompt = [Content.text(experienceController.text)];
+    final response = await model.generateContent(prompt);
+    setState(() {
+      predicted_text = response.text!;
+    });
+    print(response.text);
+  }
+
   final _formKey = GlobalKey<FormState>();
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -68,13 +72,13 @@ class _HomePageState extends State<HomePage> {
   TextEditingController highSchoolPasswordController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController tertiaryController = TextEditingController();
-  TextEditingController experienceController = TextEditingController();
   TextEditingController biographyController = TextEditingController();
   TextEditingController achievementController = TextEditingController();
   final String password = "";
   bool isLoading = false;
   final String photoURL = "";
   String message = '';
+  String predicted_text = '';
 
   Future<List<Map<String, dynamic>>> fetchUsers() async {
     List<Map<String, dynamic>> users = [];
@@ -112,6 +116,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    model = GenerativeModel(model: 'gemini-pro', apiKey: apikey.apiKey);
     super.initState();
     fetchUserData();
     requestPermissions();
@@ -384,8 +389,9 @@ class _HomePageState extends State<HomePage> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                   child: TextFormField(
+                    enableSuggestions: true,
                     onChanged: (text) {
-                      //provider.fetchPredictiveText(text);
+                      generate();
                     },
                     controller: experienceController,
                     decoration: const InputDecoration(
@@ -413,7 +419,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Text("Predicted Text:"),
+                Text(predicted_text),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
