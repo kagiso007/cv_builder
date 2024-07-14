@@ -956,6 +956,8 @@ PODS:
     - Firebase/Firestore (= 10.27.0)
     - firebase_core
     - Flutter
+  - downloads_path_provider_28 (0.0.1):
+    - Flutter
   - Firebase/Auth (10.27.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 10.27.0)
@@ -1037,6 +1039,10 @@ PODS:
     - GoogleUtilities/Environment (~> 7.12)
     - GTMSessionFetcher/Core (< 4.0, >= 2.1)
   - Flutter (1.0.0)
+  - flutter_local_notifications (0.0.1):
+    - Flutter
+  - flutter_media_downloader (0.0.1):
+    - Flutter
   - fluttertoast (0.0.2):
     - Flutter
     - Toast
@@ -1152,6 +1158,8 @@ PODS:
     - nanopb/encode (= 2.30910.0)
   - nanopb/decode (2.30910.0)
   - nanopb/encode (2.30910.0)
+  - open_file (0.0.1):
+    - Flutter
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -1165,13 +1173,17 @@ PODS:
 
 DEPENDENCIES:
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
+  - downloads_path_provider_28 (from `.symlinks/plugins/downloads_path_provider_28/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_database (from `.symlinks/plugins/firebase_database/ios`)
   - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - Flutter (from `Flutter`)
+  - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
+  - flutter_media_downloader (from `.symlinks/plugins/flutter_media_downloader/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
+  - open_file (from `.symlinks/plugins/open_file/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - printing (from `.symlinks/plugins/printing/ios`)
@@ -1205,6 +1217,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   cloud_firestore:
     :path: ".symlinks/plugins/cloud_firestore/ios"
+  downloads_path_provider_28:
+    :path: ".symlinks/plugins/downloads_path_provider_28/ios"
   firebase_auth:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
@@ -1215,10 +1229,16 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_storage/ios"
   Flutter:
     :path: Flutter
+  flutter_local_notifications:
+    :path: ".symlinks/plugins/flutter_local_notifications/ios"
+  flutter_media_downloader:
+    :path: ".symlinks/plugins/flutter_media_downloader/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
+  open_file:
+    :path: ".symlinks/plugins/open_file/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
   permission_handler_apple:
@@ -1230,6 +1250,7 @@ SPEC CHECKSUMS:
   abseil: d121da9ef7e2ff4cab7666e76c5a3e0915ae08c3
   BoringSSL-GRPC: 1e2348957acdbcad360b80a264a90799984b2ba6
   cloud_firestore: 33319d8646cb250b3385e5fea751bd36232561b5
+  downloads_path_provider_28: 7425048683ec0b86238361bd93795e91c2bc61a2
   Firebase: 26b040b20866a55f55eb3611b9fcf3ae64816b86
   firebase_auth: fd0c6e0ea74d07460c762e05e04334364e84414b
   firebase_core: f8d0424c45e0f1e596811085fc12c638d628457c
@@ -1247,6 +1268,8 @@ SPEC CHECKSUMS:
   FirebaseSharedSwift: 48de4aec81a6b79bb30404e5e6db43ea74848fed
   FirebaseStorage: 255526c3d04c49874d7a5e3886964a79f77d6f33
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  flutter_local_notifications: 4cde75091f6327eb8517fa068a0a5950212d2086
+  flutter_media_downloader: fa9b4779cc9181aed48a0f1dbad5f54c5a5a4517
   fluttertoast: e9a18c7be5413da53898f660530c56f35edfba9c
   GoogleUtilities: ea963c370a38a8069cc5f7ba4ca849a60b6d7d15
   "gRPC-C++": e725ef63c4475d7cdb7e2cf16eb0fde84bd9ee51
@@ -1255,6 +1278,7 @@ SPEC CHECKSUMS:
   image_picker_ios: c560581cceedb403a6ff17f2f816d7fea1421fc1
   leveldb-library: e8eadf9008a61f9e1dde3978c086d2b6d9b9dc28
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
+  open_file: 02eb5cb6b21264bd3a696876f5afbfb7ca4f4b7d
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   permission_handler_apple: 9878588469a2b0d0fc1e048d9f43605f92e6cec2
   printing: 233e1b73bd1f4a05615548e9b5a324c98588640b

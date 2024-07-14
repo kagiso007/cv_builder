@@ -13,9 +13,8 @@ import 'dart:async';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path/path.dart' as path;
 import 'package:pdf/pdf.dart';
+import 'package:open_file/open_file.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:google_generative_ai/google_generative_ai.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -52,6 +51,7 @@ void _updateUserDetails(
 }
 
 class _HomePageState extends State<HomePage> {
+  var displayFile = "";
   APIKEY apikey = APIKEY();
   late GenerativeModel model;
   TextEditingController experienceController = TextEditingController();
@@ -81,37 +81,17 @@ class _HomePageState extends State<HomePage> {
   String predicted_text = '';
 
   Future<List<Map<String, dynamic>>> fetchUsers() async {
+    User? user = auth.currentUser;
+    String userId = user?.uid ?? '';
     List<Map<String, dynamic>> users = [];
     QuerySnapshot snapshot =
-        await FirebaseFirestore.instance.collection('users').get();
+        await FirebaseFirestore.instance.collection(userId).get();
 
     for (var doc in snapshot.docs) {
       users.add(doc.data() as Map<String, dynamic>);
     }
 
     return users;
-  }
-
-  void _generatePdf() async {
-    setState(() {
-      isLoading = true;
-    });
-
-    try {
-      List<Map<String, dynamic>> users = await fetchUsers();
-      await generatePdf(users);
-      setState(() {
-        message = 'PDF generated successfully!';
-      });
-    } catch (e) {
-      setState(() {
-        message = 'Error generating PDF: $e';
-      });
-    } finally {
-      setState(() {
-        isLoading = false;
-      });
-    }
   }
 
   @override
@@ -128,16 +108,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  final CollectionReference collectionReference =
-      FirebaseFirestore.instance.collection('users');
-
-  Future<List<Map<String, dynamic>>> fetchData() async {
-    QuerySnapshot querySnapshot = await collectionReference.get();
-    return querySnapshot.docs
-        .map((doc) => doc.data() as Map<String, dynamic>)
-        .toList();
-  }
-
   Future<void> generatePdf(List<Map<String, dynamic>> data) async {
     final pdf = pw.Document();
 
@@ -150,9 +120,9 @@ class _HomePageState extends State<HomePage> {
       String highSchool = item['high_school'];
       String tertiary = item['tertiary'];
       String achievements = item['achievements'];
-      //final imageUrl = item['photoUrl'];
-      //final response = await http.get(Uri.parse(imageUrl));
-      //final image = pw.MemoryImage(response.bodyBytes);
+      final imageUrl = item['photoUrl'] ?? "";
+      final response = await http.get(Uri.parse(imageUrl));
+      final image = pw.MemoryImage(response.bodyBytes);
 
       // Add content to PDF
       pdf.addPage(
@@ -179,7 +149,7 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                 children: [
                   pw.SizedBox(width: 50),
-                  /*pw.Container(
+                  pw.Container(
                     width: 150,
                     height: 150,
                     decoration: pw.BoxDecoration(
@@ -190,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  pw.SizedBox(width: 10),*/
+                  pw.SizedBox(width: 10),
                 ],
               ),
               pw.SizedBox(height: 20),
@@ -223,18 +193,20 @@ class _HomePageState extends State<HomePage> {
     }
 
     final file = File(path.join(output!.path, 'curriculum_vitae.pdf'));
-    await file.writeAsBytes(await pdf.save());
+    String pathToWrite = '${output.path}/curriculum_vitae.pdf';
+    File outputFile = File(pathToWrite);
+    outputFile.writeAsBytesSync(await pdf.save());
+    displayFile = pathToWrite;
+
     print('PDF saved: ${file.path}');
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('PDF saved to ${file.path}')),
     );
   }
 
-  /*Future<void> getFilePath(String filename) async {
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    String appDocPath = appDocDir.path;
-    return join(appDocPath,filename);
-  }*/
+  void openFile() {
+    OpenFile.open(displayFile);
+  }
 
   Future<void> fetchUserData() async {
     User? user = auth.currentUser;
@@ -559,9 +531,7 @@ class _HomePageState extends State<HomePage> {
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 16.0),
                   child: Center(
                     child: ElevatedButton(
-                      onPressed: () {
-                        _generatePdf;
-                        print("hello");
+                      onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           // Navigate the user to the Home page
                         } else {
@@ -579,9 +549,20 @@ class _HomePageState extends State<HomePage> {
                                 fontSize: 10, fontWeight: FontWeight.bold)),
                         onPressed: () async {
                           // Navigate to a new page here
-                          _generatePdf;
-                          List<Map<String, dynamic>> data = await fetchData();
-                          await generatePdf(data);
+                          User? user = auth.currentUser;
+                          String userId = user?.uid ?? '';
+                          List<Map<String, dynamic>> current_user = [];
+                          final CollectionReference collectionReference =
+                              FirebaseFirestore.instance.collection('users');
+                          final documents = await collectionReference
+                              .where("id", isEqualTo: userId)
+                              .get();
+                          documents.docs.forEach((element) {
+                            current_user
+                                .add(element.data() as Map<String, dynamic>);
+                          });
+                          await generatePdf(current_user);
+                          openFile();
                         },
                         child: const Text('generate cv'),
                       ),
