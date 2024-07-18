@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cv_builder/login.dart';
 import 'package:cv_builder/api.dart';
@@ -33,7 +34,17 @@ void _updateUserDetails(
     String experience,
     String idNumber,
     String highSchool,
-    String tertiary) {
+    String tertiary,
+    String phoneNumber,
+    String address,
+    String gender,
+    String dateOfBirth,
+    String nationality,
+    String race,
+    String disability,
+    String language,
+    String skills,
+    String references) {
   final user = FirebaseAuth.instance.currentUser;
   final CollectionReference<Map<String, dynamic>> usersRef =
       FirebaseFirestore.instance.collection('users');
@@ -47,6 +58,16 @@ void _updateUserDetails(
     'tertiary': tertiary,
     'displayName': fullName,
     'bio': biography,
+    'phoneNumber': phoneNumber,
+    'address': address,
+    'gender': gender,
+    'dateOfBirth': dateOfBirth,
+    'nationality': nationality,
+    'race': race,
+    'disability': disability,
+    'language': language,
+    'skills': skills,
+    'references': references,
   }, SetOptions(merge: true));
 }
 
@@ -74,6 +95,17 @@ class _HomePageState extends State<HomePage> {
   TextEditingController tertiaryController = TextEditingController();
   TextEditingController biographyController = TextEditingController();
   TextEditingController achievementController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  TextEditingController genderController = TextEditingController();
+  TextEditingController dateOfBirthController = TextEditingController();
+  TextEditingController nationalityController = TextEditingController();
+  TextEditingController raceController = TextEditingController();
+  TextEditingController disabilityController = TextEditingController();
+  TextEditingController languageController = TextEditingController();
+  TextEditingController skillsController = TextEditingController();
+  TextEditingController referencesController = TextEditingController();
+
   final String password = "";
   bool isLoading = false;
   final String photoURL = "";
@@ -113,13 +145,24 @@ class _HomePageState extends State<HomePage> {
 
     for (var item in data) {
       // Extract specific attributes from Firestore document
-      String name = item['displayName'];
-      String email = item['email'];
-      String bio = item['bio'];
-      String idNumber = item['id_number'];
-      String highSchool = item['high_school'];
-      String tertiary = item['tertiary'];
-      String achievements = item['achievements'];
+      String name = item['displayName'] ?? "";
+      String email = item['email'] ?? "";
+      String bio = item['bio'] ?? "";
+      String idNumber = item['id_number'] ?? "";
+      String highSchool = item['high_school'] ?? "";
+      String tertiary = item['tertiary'] ?? "";
+      String achievements = item['achievements'] ?? "";
+      String skills = item['skills'] ?? "";
+      String dateOfBirth = item['dateOfBirth'] ?? "";
+      String phoneNumber = item['phoneNumber'] ?? "";
+      String address = item['address'] ?? "";
+      String nationality = item['nationality'] ?? "";
+      String race = item['race'] ?? "";
+      String gender = item['gender'] ?? "";
+      String disability = item['disabilty'] ?? "";
+      String language = item['language'] ?? "";
+      String experience = item['experience'] ?? "";
+      String references = item['references'] ?? "";
       final imageUrl = item['photoUrl'] ?? "";
       final response = await http.get(Uri.parse(imageUrl));
       final image = pw.MemoryImage(response.bodyBytes);
@@ -169,9 +212,20 @@ class _HomePageState extends State<HomePage> {
                   ['Name ', name],
                   ['Email ', email],
                   ['identity number', idNumber],
+                  ['Nationality ', nationality],
+                  ['Address ', address],
+                  ['Phone ', phoneNumber],
+                  ['Date of Birth ', dateOfBirth],
+                  ['language', language],
+                  ['Gender ', gender],
                   ['high_school ', highSchool],
                   ['higher education ', tertiary],
                   ['Achievements ', achievements],
+                  ['skills', skills],
+                  ['race ', race],
+                  ['disability ', disability],
+                  ['experience ', experience],
+                  ['references ', references],
                 ],
               ),
             ],
@@ -225,6 +279,16 @@ class _HomePageState extends State<HomePage> {
           experienceController.text = document['experience'];
           biographyController.text = document['bio'];
           achievementController.text = document['achievements'];
+          skillsController.text = document['skills'];
+          referencesController.text = document['references'];
+          phoneNumberController.text = document['phoneNumber'];
+          addressController.text = document['address'];
+          dateOfBirthController.text = document['dateOfBirth'];
+          genderController.text = document['gender'];
+          nationalityController.text = document['nationality'];
+          languageController.text = document['language'];
+          disabilityController.text = document['disability'];
+          raceController.text = document['race'];
         });
       } else {
         setState(() {
@@ -237,6 +301,16 @@ class _HomePageState extends State<HomePage> {
           experienceController.text = "any experience";
           biographyController.text = "biography";
           achievementController.text = "any achievements";
+          skillsController.text = 'skills';
+          referencesController.text = 'references';
+          phoneNumberController.text = 'phone_number';
+          addressController.text = 'address';
+          dateOfBirthController.text = 'date_of_birth';
+          genderController.text = 'gender';
+          nationalityController.text = 'nationality';
+          languageController.text = 'language';
+          disabilityController.text = 'disabilty';
+          raceController.text = 'race';
         });
       }
     });
@@ -246,12 +320,6 @@ class _HomePageState extends State<HomePage> {
   void dispose() {
     usernameController.dispose();
     super.dispose();
-  }
-
-  void _submitForm() {
-    if (_formKey.currentState?.validate() ?? false) {
-      String inputValue = usernameController.text;
-    }
   }
 
   @override
@@ -322,6 +390,238 @@ class _HomePageState extends State<HomePage> {
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your ID number';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextFormField(
+                    controller: dateOfBirthController,
+                    decoration: const InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.blue,
+                        ),
+                        hintText: "Enter your your date of birth",
+                        border: OutlineInputBorder(),
+                        labelText: "please enter your date of birth"),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your date of birth';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextFormField(
+                    controller: languageController,
+                    decoration: const InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.blue,
+                        ),
+                        hintText: "Enter languages",
+                        border: OutlineInputBorder(),
+                        labelText: "please enter languages"),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your languages';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextFormField(
+                    controller: raceController,
+                    decoration: const InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.blue,
+                        ),
+                        hintText: "Enter your race",
+                        border: OutlineInputBorder(),
+                        labelText: "please enter race"),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter race';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextFormField(
+                    controller: nationalityController,
+                    decoration: const InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.blue,
+                        ),
+                        hintText: "Enter your nationality",
+                        border: OutlineInputBorder(),
+                        labelText: "please enter nationality"),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter nationality';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextFormField(
+                    controller: genderController,
+                    decoration: const InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.blue,
+                        ),
+                        hintText: "Enter your gender",
+                        border: OutlineInputBorder(),
+                        labelText: "please enter your gender"),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your gender';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextFormField(
+                    controller: addressController,
+                    decoration: const InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.blue,
+                        ),
+                        hintText: "Enter your address",
+                        border: OutlineInputBorder(),
+                        labelText: "please enter your address"),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your address';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextFormField(
+                    controller: phoneNumberController,
+                    decoration: const InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.blue,
+                        ),
+                        hintText: "Enter your phone Number",
+                        border: OutlineInputBorder(),
+                        labelText: "please enter your phone Number"),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your phone Number';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextFormField(
+                    controller: disabilityController,
+                    decoration: const InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.blue,
+                        ),
+                        hintText: "Enter your disabilities",
+                        border: OutlineInputBorder(),
+                        labelText: "please enter your disabilities"),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your disabilities';
                       }
                       return null;
                     },
@@ -481,6 +781,64 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Padding(
                   padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextFormField(
+                    controller: skillsController,
+                    decoration: const InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.blue,
+                        ),
+                        hintText: "Enter your skills",
+                        border: OutlineInputBorder(),
+                        labelText: "please enter your skills"),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your skills';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextFormField(
+                    controller: referencesController,
+                    decoration: const InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.blue,
+                        ),
+                        hintText: "Enter your references",
+                        border: OutlineInputBorder(),
+                        labelText: "please enter your references"),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your references';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 16.0),
                   child: Center(
                     child: ElevatedButton(
@@ -502,14 +860,25 @@ class _HomePageState extends State<HomePage> {
                                 fontSize: 10, fontWeight: FontWeight.bold)),
                         onPressed: () {
                           _updateUserDetails(
-                              usernameController.text,
-                              emailController.text,
-                              biographyController.text,
-                              achievementController.text,
-                              experienceController.text,
-                              IDController.text,
-                              highSchoolPasswordController.text,
-                              tertiaryController.text);
+                            usernameController.text,
+                            emailController.text,
+                            biographyController.text,
+                            achievementController.text,
+                            experienceController.text,
+                            IDController.text,
+                            highSchoolPasswordController.text,
+                            tertiaryController.text,
+                            phoneNumberController.text,
+                            addressController.text,
+                            genderController.text,
+                            dateOfBirthController.text,
+                            nationalityController.text,
+                            raceController.text,
+                            disabilityController.text,
+                            languageController.text,
+                            skillsController.text,
+                            referencesController.text,
+                          );
                           // Navigate to a new page here
                           Fluttertoast.showToast(
                               msg: "details saved successfully",
