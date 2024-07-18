@@ -3,6 +3,7 @@ import 'package:cv_builder/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:cv_builder/loading.dart';
 
 class resetPassword extends StatefulWidget {
   const resetPassword({super.key, required this.title});
@@ -14,7 +15,9 @@ class resetPassword extends StatefulWidget {
 }
 
 class _resetPasswordState extends State<resetPassword> {
+  Loadings showLoaderDialog = Loadings();
   final _formKey = GlobalKey<FormState>();
+  final GlobalKey<State> _keyLoader = new GlobalKey<State>();
   TextEditingController emailController = TextEditingController();
 
   @override
@@ -76,8 +79,7 @@ class _resetPasswordState extends State<resetPassword> {
                             fontWeight: FontWeight.bold)),
                     onPressed: () async {
                       if (EmailValidator.validate(emailController.text)) {
-                        showLoaderDialog(context);
-
+                        Loadings.showLoading(context, _keyLoader);
                         await FirebaseAuth.instance.sendPasswordResetEmail(
                             email: emailController.text);
                         Navigator.pop(context);

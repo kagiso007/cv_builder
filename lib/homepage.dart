@@ -1,4 +1,3 @@
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cv_builder/login.dart';
 import 'package:cv_builder/api.dart';
@@ -16,6 +15,7 @@ import 'package:path/path.dart' as path;
 import 'package:pdf/pdf.dart';
 import 'package:open_file/open_file.dart';
 import 'package:http/http.dart' as http;
+import 'package:cv_builder/loading.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -74,10 +74,24 @@ void _updateUserDetails(
 class _HomePageState extends State<HomePage> {
   var displayFile = "";
   APIKEY apikey = APIKEY();
+  Loadings showLoaderDialog = Loadings();
+  final GlobalKey<State> _keyLoader = new GlobalKey<State>();
   late GenerativeModel model;
   TextEditingController experienceController = TextEditingController();
+  Timer? _debounce;
+
+  void _onSearchChanged(String query) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 300), () {
+      // Perform the search operation here
+    });
+  }
+
   generate() async {
-    final prompt = [Content.text(experienceController.text)];
+    final prompt = [
+      Content.text(
+          'complete the following sentence with one word:${experienceController.text}')
+    ];
     final response = await model.generateContent(prompt);
     setState(() {
       predicted_text = response.text!;
@@ -159,7 +173,7 @@ class _HomePageState extends State<HomePage> {
       String nationality = item['nationality'] ?? "";
       String race = item['race'] ?? "";
       String gender = item['gender'] ?? "";
-      String disability = item['disabilty'] ?? "";
+      String disability = item['disability'] ?? "";
       String language = item['language'] ?? "";
       String experience = item['experience'] ?? "";
       String references = item['references'] ?? "";
@@ -309,7 +323,7 @@ class _HomePageState extends State<HomePage> {
           genderController.text = 'gender';
           nationalityController.text = 'nationality';
           languageController.text = 'language';
-          disabilityController.text = 'disabilty';
+          disabilityController.text = 'disability';
           raceController.text = 'race';
         });
       }
@@ -319,6 +333,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     usernameController.dispose();
+    _debounce?.cancel();
+    experienceController.dispose();
     super.dispose();
   }
 
@@ -439,7 +455,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         prefixIcon: Icon(
-                          Icons.person,
+                          Icons.speaker_notes,
                           color: Colors.blue,
                         ),
                         hintText: "Enter languages",
@@ -497,7 +513,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         prefixIcon: Icon(
-                          Icons.person,
+                          Icons.flag,
                           color: Colors.blue,
                         ),
                         hintText: "Enter your nationality",
@@ -555,7 +571,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         prefixIcon: Icon(
-                          Icons.person,
+                          Icons.home,
                           color: Colors.blue,
                         ),
                         hintText: "Enter your address",
@@ -584,7 +600,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         prefixIcon: Icon(
-                          Icons.person,
+                          Icons.phone,
                           color: Colors.blue,
                         ),
                         hintText: "Enter your phone Number",
@@ -613,7 +629,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         prefixIcon: Icon(
-                          Icons.person,
+                          Icons.local_hospital,
                           color: Colors.blue,
                         ),
                         hintText: "Enter your disabilities",
@@ -736,7 +752,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         prefixIcon: Icon(
-                          Icons.person,
+                          Icons.star,
                           color: Colors.blue,
                         ),
                         hintText: "Enter your biography",
@@ -794,7 +810,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         prefixIcon: Icon(
-                          Icons.person,
+                          Icons.work,
                           color: Colors.blue,
                         ),
                         hintText: "Enter your skills",
@@ -880,6 +896,7 @@ class _HomePageState extends State<HomePage> {
                             referencesController.text,
                           );
                           // Navigate to a new page here
+
                           Fluttertoast.showToast(
                               msg: "details saved successfully",
                               toastLength: Toast.LENGTH_SHORT,
@@ -918,19 +935,23 @@ class _HomePageState extends State<HomePage> {
                                 fontSize: 10, fontWeight: FontWeight.bold)),
                         onPressed: () async {
                           // Navigate to a new page here
+                          Loadings.showLoading(context, _keyLoader);
                           User? user = auth.currentUser;
                           String userId = user?.uid ?? '';
-                          List<Map<String, dynamic>> current_user = [];
+                          List<Map<String, dynamic>> currentUser = [];
                           final CollectionReference collectionReference =
                               FirebaseFirestore.instance.collection('users');
                           final documents = await collectionReference
                               .where("id", isEqualTo: userId)
                               .get();
-                          documents.docs.forEach((element) {
-                            current_user
+                          for (var element in documents.docs) {
+                            currentUser
                                 .add(element.data() as Map<String, dynamic>);
-                          });
-                          await generatePdf(current_user);
+                          }
+                          await generatePdf(currentUser);
+                          Navigator.of(_keyLoader.currentContext!,
+                                  rootNavigator: true)
+                              .pop();
                           openFile();
                         },
                         child: const Text('generate cv'),
@@ -997,6 +1018,7 @@ class _HomePageState extends State<HomePage> {
                               ));
                       Navigator.push(context, route);
                       await FirebaseAuth.instance.signOut();
+
                       Fluttertoast.showToast(
                           msg: "log out successful",
                           toastLength: Toast.LENGTH_SHORT,

@@ -1,4 +1,5 @@
 import 'package:cv_builder/homepage.dart';
+import 'package:cv_builder/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:cv_builder/signup.dart';
 import 'package:cv_builder/forgotpassword.dart';
@@ -37,6 +38,8 @@ showLoaderDialog(BuildContext context) {
 }
 
 class _LoginState extends State<Login> {
+  Loadings showLoaderDialog = Loadings();
+  final GlobalKey<State> _keyLoader = new GlobalKey<State>();
   final user = FirebaseAuth.instance.currentUser;
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
@@ -65,6 +68,7 @@ class _LoginState extends State<Login> {
                             duration: const Duration(seconds: 1),
                             child: Container(
                               decoration: const BoxDecoration(
+                                  color: Colors.black,
                                   image: DecorationImage(
                                       image: AssetImage(
                                           'assets/images/background.png'),
@@ -165,13 +169,16 @@ class _LoginState extends State<Login> {
                         await FirebaseAuth.instance.currentUser?.reload();
                         if (EmailValidator.validate(emailController.text)) {
                           if (passwordController.text.isNotEmpty) {
+                            Loadings.showLoading(context, _keyLoader);
+
                             try {
-                              //showLoaderDialog(context);
                               final credential = await FirebaseAuth.instance
                                   .signInWithEmailAndPassword(
                                       email: emailController.text,
                                       password: passwordController.text);
-                              //Navigator.pop(context);
+                              Navigator.of(_keyLoader.currentContext!,
+                                      rootNavigator: true)
+                                  .pop();
                               if (FirebaseAuth
                                   .instance.currentUser!.emailVerified) {
                                 Route route = MaterialPageRoute(
@@ -192,6 +199,9 @@ class _LoginState extends State<Login> {
                               }
                             } on FirebaseAuthException catch (e) {
                               if (e.code == 'user-not-found') {
+                                Navigator.of(_keyLoader.currentContext!,
+                                        rootNavigator: true)
+                                    .pop();
                                 Fluttertoast.showToast(
                                     msg: "No user found for that email.",
                                     toastLength: Toast.LENGTH_SHORT,
@@ -202,6 +212,9 @@ class _LoginState extends State<Login> {
                                     textColor: Colors.white,
                                     fontSize: 16.0);
                               } else if (e.code == 'wrong-password') {
+                                Navigator.of(_keyLoader.currentContext!,
+                                        rootNavigator: true)
+                                    .pop();
                                 Fluttertoast.showToast(
                                     msg:
                                         "Wrong password provided for that user.",

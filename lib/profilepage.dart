@@ -17,6 +17,11 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
+class AlwaysDisabledFocusNode extends FocusNode {
+  @override
+  bool get hasFocus => false;
+}
+
 void _updateUserDetails(
     String fullName, String email, String biography, String password) {
   final user = FirebaseAuth.instance.currentUser;
@@ -64,6 +69,25 @@ class _ProfilePageState extends State<ProfilePage> {
         _imageUrl = userDoc['photoUrl'] ?? '';
       });
     }
+  }
+
+  void _showImageDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Image.network(_imageUrl),
+          actions: [
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<void> _pickAndUploadImage() async {
@@ -267,12 +291,6 @@ class _ProfilePageState extends State<ProfilePage> {
     super.dispose();
   }
 
-  void _submitForm() {
-    if (_formKey.currentState?.validate() ?? false) {
-      String inputValue = usernameController.text;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -289,23 +307,28 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                _imageUrl.isNotEmpty
-                    ? CircleAvatar(
-                        radius: 50,
-                        backgroundImage: NetworkImage(_imageUrl),
-                      )
-                    : const CircleAvatar(
-                        radius: 50,
-                        child: Icon(Icons.person, size: 50),
-                      ),
+                GestureDetector(
+                  onTap: () {
+                    _showImageDialog(context);
+                  },
+                  child: _imageUrl.isNotEmpty
+                      ? CircleAvatar(
+                          radius: 50,
+                          backgroundImage: NetworkImage(_imageUrl),
+                        )
+                      : const CircleAvatar(
+                          radius: 50,
+                          child: Icon(Icons.person, size: 50),
+                        ),
+                ),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                      textStyle:
-                          const TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 50, vertical: 20),
+                      textStyle: const TextStyle(
+                          fontSize: 10, fontWeight: FontWeight.bold)),
                   onPressed: _pickAndUploadImage,
                   child: const Text('Change Profile Picture'),
                 ),
@@ -342,6 +365,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                   child: TextFormField(
+                    readOnly: true,
                     controller: emailController,
                     decoration: const InputDecoration(
                         focusedBorder: UnderlineInputBorder(

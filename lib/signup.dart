@@ -1,3 +1,4 @@
+import 'package:cv_builder/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:cv_builder/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -32,6 +33,8 @@ void _createNewUserInFirestore(
 class _SignUPState extends State<SignUP> {
   final user = FirebaseAuth.instance.currentUser;
   final _formKey = GlobalKey<FormState>();
+  Loadings showLoaderDialog = Loadings();
+  final GlobalKey<State> _keyLoader = new GlobalKey<State>();
   TextEditingController emailController = TextEditingController();
   TextEditingController full_nameController = TextEditingController();
   TextEditingController biographyController = TextEditingController();
@@ -211,14 +214,15 @@ class _SignUPState extends State<SignUP> {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 50, vertical: 20),
                         textStyle: const TextStyle(
                             fontSize: 10, fontWeight: FontWeight.bold)),
                     onPressed: () async {
                       if (passwordController.text ==
                               confirmPasswordController.text &&
                           EmailValidator.validate(emailController.text)) {
+                        Loadings.showLoading(context, _keyLoader);
                         try {
                           final credential = await FirebaseAuth.instance
                               .createUserWithEmailAndPassword(
@@ -231,6 +235,9 @@ class _SignUPState extends State<SignUP> {
                               biographyController.text,
                               emailController.text,
                               passwordController.text);
+                          Navigator.of(_keyLoader.currentContext!,
+                                  rootNavigator: true)
+                              .pop();
 
                           Fluttertoast.showToast(
                               msg: "account created succefully",
